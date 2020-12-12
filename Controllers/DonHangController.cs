@@ -20,11 +20,26 @@ namespace API.Controllers
         {
             return dbContext.DonHangs.ToList();
         }
-
-        [HttpGet("{id}")]
-        public DonHang Get(int id)
+        [HttpPost("layngay")]
+        public IEnumerable<DonHang> Get(DonHang donhang ) 
         {
-            return dbContext.DonHangs.FirstOrDefault(e => e.ID_DonHang == id);
+            List<DonHang> dbdonhang = dbContext.DonHangs.ToList();
+            List<DonHang> donhangs = new List<DonHang>();
+            foreach(DonHang item in dbdonhang) 
+            {
+                if (item.NgayThang == donhang.NgayThang) donhangs.Add(item);
+            }
+            return donhangs;
+        }
+        [HttpGet("{id}")]
+        public IEnumerable<DonHang> Get(int id)
+        {
+            List<DonHang> donhang = new List<DonHang>();
+            List<DonHang> dbdonhang = dbContext.DonHangs.ToList();
+            foreach (DonHang item in dbdonhang) {
+                if (item.ID_User == id) donhang.Add(item);
+            }
+            return donhang;
         }
 
         [HttpPost]
@@ -36,14 +51,9 @@ namespace API.Controllers
             return CreatedAtAction(nameof(Get), new { ID_DonHang = donhang.ID_DonHang }, donhang);
         }
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] DonHang donhang)
+        [HttpPut]
+        public void Put()
         {
-            var entity = dbContext.DonHangs.FirstOrDefault(e => e.ID_DonHang == id);
-            entity.PTThanhToan = donhang.PTThanhToan;
-            entity.TongTien = donhang.TongTien;
-            entity.ID_User = donhang.ID_User;
-            dbContext.SaveChanges();
         }
 
         [HttpDelete("{id}")]

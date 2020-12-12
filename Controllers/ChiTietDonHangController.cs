@@ -21,15 +21,22 @@ namespace API.Controllers
             return dbContext.ChiTietDonHangs.ToList();
         }
 
-        [HttpGet("{id}")]
-        public ChiTietDonHang Get(int id)
+        [HttpPost("ctdh")]
+        public IEnumerable<ChiTietDonHang> Get(ChiTietDonHang chitiet)
         {
-            return dbContext.ChiTietDonHangs.FirstOrDefault(e => e.ID_ChiTiet == id);
+            List<ChiTietDonHang> chitietdonhang = new List<ChiTietDonHang>();
+            List<ChiTietDonHang> dbchitiet = dbContext.ChiTietDonHangs.ToList();
+            foreach (ChiTietDonHang item in dbchitiet) {
+                if (item.ID_DonHang == chitiet.ID_DonHang) chitietdonhang.Add(item);
+            }
+            return chitietdonhang;
         }
 
         [HttpPost]
         public async Task<ActionResult<ChiTietDonHang>> PostUser(ChiTietDonHang chitietdonhang)
         {
+            ThucPham thucPham = dbContext.ThucPhams.FirstOrDefault(e => e.ID_ThucPham == chitietdonhang.ID_ThucPham);
+            chitietdonhang.TenThucPham = thucPham.Name;
             dbContext.ChiTietDonHangs.Add(chitietdonhang);
             await dbContext.SaveChangesAsync();
 
@@ -37,15 +44,8 @@ namespace API.Controllers
         }
 
         [HttpPut("{id}")]
-        public void Put(int id, [FromBody] ChiTietDonHang chitietdonhang)
+        public void Put()
         {
-            var entity = dbContext.ChiTietDonHangs.FirstOrDefault(e => e.ID_ChiTiet == id);
-            entity.ID_DonHang = chitietdonhang.ID_DonHang;
-            entity.ID_ThucPham = chitietdonhang.ID_ThucPham;
-            entity.So_Luong = chitietdonhang.So_Luong;
-            entity.NgayThang = chitietdonhang.NgayThang;
-            entity.DonGia = chitietdonhang.DonGia;
-            dbContext.SaveChanges();
         }
 
         [HttpDelete("{id}")]

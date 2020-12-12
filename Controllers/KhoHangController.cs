@@ -20,7 +20,20 @@ namespace API.Controllers
         {
             return dbContext.KhoHangs.ToList();
         }
-
+        [HttpPost("check")]
+        public bool Check([FromBody] KhoHang khohang)
+        {
+            KhoHang trong_kho = dbContext.KhoHangs.FirstOrDefault(e => e.ID_ThucPham == khohang.ID_ThucPham);
+            if (trong_kho != null) return true;
+            return false;
+        }
+        [HttpPost("checksoluong")]
+        public bool Checksoluong([FromBody] KhoHang khohang) 
+        {
+            KhoHang trong_kho = dbContext.KhoHangs.FirstOrDefault(e => e.ID_ThucPham == khohang.ID_ThucPham);
+            if (trong_kho.SoLuong >= -(khohang.SoLuong)) return true;
+            else return false;
+        }
         [HttpGet("{id}")]
         public KhoHang Get(int id)
         {
@@ -30,22 +43,23 @@ namespace API.Controllers
         [HttpPost]
         public async Task<ActionResult<KhoHang>> PostKhoHang(KhoHang khohang)
         {
+            ThucPham ThucPham = dbContext.ThucPhams.FirstOrDefault(e => e.ID_ThucPham == khohang.ID_ThucPham);
+            khohang.TenThucPham = ThucPham.Name;
             dbContext.KhoHangs.Add(khohang);
             await dbContext.SaveChangesAsync();
 
             return CreatedAtAction(nameof(Get), new { ID_KhoHang = khohang.ID_KhoHang }, khohang);
         }
 
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] KhoHang khohang)
+        [HttpPut]
+        public void Put([FromBody] KhoHang khohang)
         {
-            var entity = dbContext.KhoHangs.FirstOrDefault(e => e.ID_KhoHang == id);
-            entity.ID_ThucPham = khohang.ID_ThucPham;
-            entity.SoLuong = khohang.SoLuong;
+            var entity = dbContext.KhoHangs.FirstOrDefault(e => e.ID_ThucPham == khohang.ID_ThucPham);
+            entity.SoLuong += khohang.SoLuong;
             dbContext.SaveChanges();
         }
 
-        [HttpDelete("{id}")]
+        [HttpDelete]
         public async Task<IActionResult> Delete(int id)
         {
             var khohang = await dbContext.KhoHangs.FindAsync(id);

@@ -26,7 +26,11 @@ namespace API.Controllers
         {
             return dbContext.Users.FirstOrDefault(e => e.ID_User == id);
         }
-
+        [HttpPost("check")]
+        public User Check([FromBody] User user)
+        {
+            return dbContext.Users.FirstOrDefault(e => e.Username == user.Username && e.Password == user.Password);
+        }
         [HttpPost]
         public async Task<ActionResult<User>> PostUser(User user)
         {
@@ -41,6 +45,7 @@ namespace API.Controllers
         {
             var entity = dbContext.Users.FirstOrDefault(e => e.ID_User == id);
             entity.Name = user.Name;
+            entity.Password = user.Password;
             entity.SDT = user.SDT;
             entity.DiaChi = user.DiaChi;
             entity.Email = user.Email;

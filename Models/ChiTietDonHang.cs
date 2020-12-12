@@ -10,8 +10,9 @@ namespace API.Models
         public int ID_DonHang {get; set; }
         
         public int ID_ThucPham {get; set; }
-        public int So_Luong {get; set; }
-        public System.DateTime NgayThang {get; set; }
+
+        public string TenThucPham {get; set; }
+        public int So_Luong {get; set; } 
         public int DonGia {get; set; }
         
         [ForeignKey("ID_ThucPham")]
@@ -20,3 +21,4 @@ namespace API.Models
         public virtual DonHang DonHang {get; set; }
     }
 }
+        

@@ -18,9 +18,13 @@ namespace API.Models
         public virtual DbSet<NhapXuat> NhapXuats { get; set; }
         public virtual DbSet<ThucPham> ThucPhams { get; set; }
         public virtual DbSet<DonHang> DonHangs { get; set; }
+        public virtual DbSet<TheoDoi> TheoDois {get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder) {
             base.OnModelCreating(modelBuilder);
+            modelBuilder.Entity<User>(entity => {
+                entity.HasIndex(e => e.Username).IsUnique();
+            });
         }
     }
 }

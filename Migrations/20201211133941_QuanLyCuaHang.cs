@@ -26,12 +26,27 @@ namespace API.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "TheoDois",
+                columns: table => new
+                {
+                    ID_TheoDoi = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    Email = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_TheoDois", x => x.ID_TheoDoi);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Users",
                 columns: table => new
                 {
                     ID_User = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    Username = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SDT = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     DiaChi = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: true),
@@ -75,7 +90,8 @@ namespace API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     PTThanhToan = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     TongTien = table.Column<int>(type: "int", nullable: false),
-                    ID_User = table.Column<int>(type: "int", nullable: false)
+                    ID_User = table.Column<int>(type: "int", nullable: false),
+                    NgayThang = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -95,6 +111,7 @@ namespace API.Migrations
                     ID_KhoHang = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ID_ThucPham = table.Column<int>(type: "int", nullable: false),
+                    TenThucPham = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     SoLuong = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -138,8 +155,8 @@ namespace API.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     ID_DonHang = table.Column<int>(type: "int", nullable: false),
                     ID_ThucPham = table.Column<int>(type: "int", nullable: false),
+                    TenThucPham = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     So_Luong = table.Column<int>(type: "int", nullable: false),
-                    NgayThang = table.Column<DateTime>(type: "datetime2", nullable: false),
                     DonGia = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
@@ -188,6 +205,13 @@ namespace API.Migrations
                 name: "IX_ThucPhams_ID_KM",
                 table: "ThucPhams",
                 column: "ID_KM");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Users_Username",
+                table: "Users",
+                column: "Username",
+                unique: true,
+                filter: "[Username] IS NOT NULL");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -200,6 +224,9 @@ namespace API.Migrations
 
             migrationBuilder.DropTable(
                 name: "NhapXuats");
+
+            migrationBuilder.DropTable(
+                name: "TheoDois");
 
             migrationBuilder.DropTable(
                 name: "DonHangs");

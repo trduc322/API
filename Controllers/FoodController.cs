@@ -7,7 +7,6 @@ using API.Models;
 
 namespace API.Controllers
 {
-    
     [Route("[controller]")]
     [ApiController]
     public class FoodController : ControllerBase
@@ -21,16 +20,17 @@ namespace API.Controllers
         {
             return dbContext.ThucPhams.ToList();
         }
-
         [HttpGet("{id}")]
-        public ThucPham Get(int id)
+        public String Get(int id)
         {
-            return dbContext.ThucPhams.FirstOrDefault(e => e.ID_ThucPham == id);
+            ThucPham thucPham = dbContext.ThucPhams.FirstOrDefault(e => e.ID_ThucPham == id);
+            return thucPham.Name;
         }
 
         [HttpPost]
         public async Task<ActionResult<ThucPham>> PostThucPham(ThucPham food)
         {
+            food.ID_KM = 2;
             dbContext.ThucPhams.Add(food);
             await dbContext.SaveChangesAsync();
 
@@ -40,6 +40,7 @@ namespace API.Controllers
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] ThucPham food)
         {
+            food.ID_KM = 2;
             var entity = dbContext.ThucPhams.FirstOrDefault(e => e.ID_ThucPham == id);
             entity.Name = food.Name;
             entity.LoaiThucPham = food.LoaiThucPham;

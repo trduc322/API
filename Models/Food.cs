@@ -11,7 +11,7 @@ namespace API.Models
         public int ID_KM {get; set; }
         public int GiaGoc {get; set; }
         public string MoTa {get; set; }
-        public string Link_Anh {get; set;}
+        public string Link_Anh {get; set;}  
         [ForeignKey("ID_KM")]
 
         public virtual KhuyenMai KhuyenMai {get; set; }

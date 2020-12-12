@@ -17,6 +17,7 @@ namespace API.Models
         public string PTThanhToan {get; set; }
         public int TongTien {get; set; }
         public int ID_User {get; set; }
+        public System.DateTime NgayThang {get; set; }
         [ForeignKey("ID_User")]
         public virtual User User {get; set; }
 

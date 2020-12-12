@@ -15,7 +15,7 @@ namespace API
 {
     public class Startup
     {
-        
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -26,14 +26,18 @@ namespace API
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            
+
             services.AddCors(options =>
         {
-            options.AddPolicy("CorsApi",
-                builder => builder.WithOrigins("http://localhost:5000", "http://localhost:5001")
-            .AllowAnyHeader()
-            .AllowAnyMethod());
+            options.AddDefaultPolicy( builder =>
+                {
+                    builder.WithOrigins("http://localhost:3000");
+                    builder.AllowAnyOrigin()
+                            .AllowAnyMethod()
+                            .AllowAnyHeader();
+                });
         });
+
             services.AddControllers();
         }
 
@@ -49,7 +53,7 @@ namespace API
 
             app.UseRouting();
 
-            app.UseCors("CorsApi");
+            app.UseCors();  
 
             app.UseAuthorization();
 
@@ -57,7 +61,9 @@ namespace API
             {
                 endpoints.MapControllers();
             });
-            
+
+
+
         }
     }
 }

@@ -10,7 +10,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace API.Migrations
 {
     [DbContext(typeof(DBContext))]
-    [Migration("20201202081603_QuanLyCuaHang")]
+    [Migration("20201211133941_QuanLyCuaHang")]
     partial class QuanLyCuaHang
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -37,11 +37,11 @@ namespace API.Migrations
                     b.Property<int>("ID_ThucPham")
                         .HasColumnType("int");
 
-                    b.Property<DateTime>("NgayThang")
-                        .HasColumnType("datetime2");
-
                     b.Property<int>("So_Luong")
                         .HasColumnType("int");
+
+                    b.Property<string>("TenThucPham")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID_ChiTiet");
 
@@ -61,6 +61,9 @@ namespace API.Migrations
 
                     b.Property<int>("ID_User")
                         .HasColumnType("int");
+
+                    b.Property<DateTime>("NgayThang")
+                        .HasColumnType("datetime2");
 
                     b.Property<string>("PTThanhToan")
                         .HasColumnType("nvarchar(max)");
@@ -87,6 +90,9 @@ namespace API.Migrations
 
                     b.Property<int>("SoLuong")
                         .HasColumnType("int");
+
+                    b.Property<string>("TenThucPham")
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("ID_KhoHang");
 
@@ -151,6 +157,21 @@ namespace API.Migrations
                     b.ToTable("NhapXuats");
                 });
 
+            modelBuilder.Entity("API.Models.TheoDoi", b =>
+                {
+                    b.Property<int>("ID_TheoDoi")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .UseIdentityColumn();
+
+                    b.Property<string>("Email")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("ID_TheoDoi");
+
+                    b.ToTable("TheoDois");
+                });
+
             modelBuilder.Entity("API.Models.ThucPham", b =>
                 {
                     b.Property<int>("ID_ThucPham")
@@ -202,13 +223,23 @@ namespace API.Migrations
                     b.Property<string>("Name")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Password")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<bool>("Role")
                         .HasColumnType("bit");
 
                     b.Property<string>("SDT")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Username")
+                        .HasColumnType("nvarchar(450)");
+
                     b.HasKey("ID_User");
+
+                    b.HasIndex("Username")
+                        .IsUnique()
+                        .HasFilter("[Username] IS NOT NULL");
 
                     b.ToTable("Users");
                 });
