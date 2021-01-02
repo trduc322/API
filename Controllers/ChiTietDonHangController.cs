@@ -20,7 +20,6 @@ namespace API.Controllers
         {
             return dbContext.ChiTietDonHangs.ToList();
         }
-
         [HttpPost("ctdh")]
         public IEnumerable<ChiTietDonHang> Get(ChiTietDonHang chitiet)
         {

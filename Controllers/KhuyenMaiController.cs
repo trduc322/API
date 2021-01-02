@@ -20,7 +20,14 @@ namespace API.Controllers
         {
             return dbContext.KhuyenMais.ToList();
         }
-
+        [HttpPost("khuyenmai")]
+        public string Check(KhuyenMai khuyenmai) 
+        {
+            string Phan_Tram_Khuyen_Mai = "0";
+            KhuyenMai khuyenMai = dbContext.KhuyenMais.FirstOrDefault(e => e.Name == khuyenmai.Name);
+            if (khuyenMai == null) return Phan_Tram_Khuyen_Mai;
+            return khuyenMai.Phan_Tram;
+        }
         [HttpGet("{id}")]
         public KhuyenMai Get(int id)
         {

@@ -26,7 +26,12 @@ namespace API.Controllers
             ThucPham thucPham = dbContext.ThucPhams.FirstOrDefault(e => e.ID_ThucPham == id);
             return thucPham.Name;
         }
-
+        [HttpPost("chitiet")]
+        public ThucPham Chitiet(ThucPham thucpham) 
+        {
+            ThucPham thucPham = dbContext.ThucPhams.FirstOrDefault(e => e.ID_ThucPham == thucpham.ID_ThucPham);
+            return thucPham;
+        }
         [HttpPost]
         public async Task<ActionResult<ThucPham>> PostThucPham(ThucPham food)
         {

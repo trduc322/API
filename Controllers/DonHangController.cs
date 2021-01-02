@@ -41,7 +41,32 @@ namespace API.Controllers
             }
             return donhang;
         }
-
+        [HttpPost("doanhthuthang")]
+        public int GetDoanhThu(DonHang donhang) 
+        {
+            int doanhthu = 0;
+            List<DonHang> dbdonhang = dbContext.DonHangs.ToList();
+            foreach (DonHang item in dbdonhang) {
+                if (item.NgayThang.Month == donhang.NgayThang.Month) 
+                {
+                    doanhthu += item.TongTien;
+                }
+            }
+            return doanhthu;
+        }
+        [HttpPost("doanhthutheongay")]
+        public int GetDoanhThuNgay(DonHang donhang) 
+        {
+            int doanhthu = 0;
+            List<DonHang> dbdonhang = dbContext.DonHangs.ToList();
+            foreach (DonHang item in dbdonhang) {
+                if(item.NgayThang.Month == donhang.NgayThang.Month && item.NgayThang.Day == donhang.NgayThang.Day)
+                {
+                    doanhthu += item.TongTien;
+                }
+            }
+            return doanhthu;
+        }
         [HttpPost]
         public async Task<ActionResult<ThucPham>> PostDonHang(DonHang donhang)
         {
